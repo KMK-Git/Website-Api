@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-params=$(jq -r '.[] | [.ParameterKey, .ParameterValue] | join("=") | sub("[ ]";"\\ ")' params.json)
+params=$(jq -r '.[] | [.ParameterKey, .ParameterValue] | join("=") | gsub("[ ]";"\\ ")' params.json)
 echo $params
 escaped_params=$(printf "%q " "$params")
 echo $escaped_params
