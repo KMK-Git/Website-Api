@@ -12,7 +12,7 @@ script:
 - sam package --template-file build/template.yaml --s3-bucket $BUILD_ARTIFACT_BUCKET --output-template-file build/packaged.yaml
 deploy:
   provider: script
-  script: sam deploy --parameter-overrides $(printf %q $(jq -r '.[] | [.ParameterKey, .ParameterValue] | join("=")' param.json)) --template-file build/packaged.yaml --stack-name website-api
+  script: sam deploy --parameter-overrides $(printf %q $(jq -r '.[] | [.ParameterKey, .ParameterValue] | join("=")' params.json)) --template-file build/packaged.yaml --stack-name website-api
   skip_cleanup: true
   on:
     branch: master
