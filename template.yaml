@@ -12,7 +12,7 @@ Parameters:
   EmailTemplateBucket:
     Type: 'String'
     MinLength: 3
-    MinLength: 63
+    MaxLength: 63
   TextGenericTemplate:
     Type: 'String'
   HtmlGenericTemplate:
