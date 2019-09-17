@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
-params=$(jq -r '.[] | [.ParameterKey, .ParameterValue] | join("=") | gsub("[ ]";"\\ ")' params.json)
-echo $params
-escaped_params=$(printf "%q " "$params")
-echo $escaped_params
-sam deploy --parameter-overrides $escaped_params --template-file build/packaged.yaml --stack-name website-api
+STACK_NAME="website-api"
+PARAMETERS_FILE="params.json"
+PARAMS=($(jq -r '.[] | [.ParameterKey, .ParameterValue] | "\(.[0])=\(.[1])"' ${PARAMETERS_FILE}))
+echo $PARAMS
+echo ${PARAMS[@]}
+sam deploy \
+  --stack-name "${STACK_NAME}" \
+  --parameter-overrides ${PARAMS[@]}
