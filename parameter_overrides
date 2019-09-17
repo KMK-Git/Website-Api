@@ -1,1 +1,0 @@
-ContactMeFormFunctionRoleARN='arn:aws:iam::765481644205:role/LambdaWebsiteAPI' EmailTemplateBucket='kaustubhk-email-templates' TextGenericTemplate='generic_template.txt' HtmlGenericTemplate='generic_template.html' SenderEmail='Kaustubh Khavnekar <admin@kaustubhk.com>' AdminEmail='kaustubhkhavnekar@gmail.com'
