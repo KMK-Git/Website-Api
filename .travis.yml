@@ -1,0 +1,25 @@
+language: python
+python:
+- '3.7'
+branches:
+  only: master
+install:
+- pip install awscli
+- pip install aws-sam-cli
+script:
+- sam validate
+- sam build -b build/
+- sam package --template-file build/template.yaml --s3-bucket $BUILD_ARTIFACT_BUCKET --output-template-file build/packaged.yaml
+deploy:
+  provider: script
+  script: sam deploy --template-file build/packaged.yaml --stack-name website-api
+  skip_cleanup: true
+  on:
+    branch: master
+notifications:
+  email:
+    on_failure: always
+env:
+  global:
+  - BUILD_ARTIFACT_BUCKET=kaustubhk-build-artifacts
+  - AWS_DEFAULT_REGION=us-east-1

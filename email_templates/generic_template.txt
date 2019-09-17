@@ -1,0 +1,4 @@
+{{header}}
+{{subtext}}
+This is an automated mail sent because you are in Kaustubh Khavnekar's mailing list. If you want to unsubscribe, visit https://kaustubhk.com/unsubscribe/{{unsubscribe-key}}.
+You can visit my website at https://kaustubhk.com

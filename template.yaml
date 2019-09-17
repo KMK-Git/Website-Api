@@ -1,0 +1,61 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+
+Transform: 'AWS::Serverless-2016-10-31'
+
+Description: 'SAM template for website API'
+
+Parameters:
+  ContactMeFormFunctionRoleARN:
+    Type: 'String'
+    AllowedPattern: 'arn:(aws[a-zA-Z-]*)?:iam::\d{12}:role/?[a-zA-Z_0-9+=,.@\-_/]+'
+  EmailTemplateBucket:
+    Type: 'String'
+    MinLength: 3
+    MinLength: 63
+  TextGenericTemplate:
+    Type: 'String'
+  HtmlGenericTemplate:
+    Type: 'String'
+  SenderEmail:
+    Type: 'String'
+  AdminEmail:
+    Type: 'String'
+Resources:
+  RestApi:
+    Type: 'AWS::Serverless::Api'
+    Properties:
+      Name: 'RestApi'
+      DefinitionUri: 'rest_api.yaml'
+      StageName: 'beta'
+      EndpointConfiguration: 'EDGE'
+  ContactMeFormFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: 'ContactMeForm'
+      CodeUri: 'ContactMeForm/'
+      Handler: 'lambda_function.lambda_handler'
+      Runtime: 'python3.7'
+      Role: !Ref ContactMeFormFunctionRoleARN
+      Environment:
+        Variables:
+          BUCKET_NAME: !Ref EmailTemplateBucket
+          TEXT_TEMPLATE: !Ref TextGenericTemplate
+          HTML_TEMPLATE: !Ref HtmlGenericTemplate
+          SENDER: !Ref SenderEmail
+          ADMIN_EMAIL: !Ref AdminEmail
+      Events:
+        RestApiEvent:
+          Type: Api
+          Properties:
+            Path: /contact-form
+            Method: post
+            RestApiId: !Ref RestApi
+
+Outputs:
+  RestApiEndpoint:
+    Description: "API Gateway endpoint URL for for Rest API"
+    Value: !Sub "https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/${RestApi.Stage}/"
+  ContactMeFormARN:
+    Description: "ContactMeForm Function ARN"
+    Value: !GetAtt ContactMeFormFunction.Arn
