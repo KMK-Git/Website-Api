@@ -30,7 +30,7 @@ Resources:
       StageName: 'beta'
       EndpointConfiguration: 'EDGE'
       Variables:
-        ContactMeFormFunctionName: !Ref ContactMeFormFunction
+        ContactMeFormFunctionArn: !GetAtt ContactMeFormFunction.Arn
         AccountID: !Ref AWS::AccountId
         RegionName: !Ref AWS::Region
   ContactMeFormFunction:

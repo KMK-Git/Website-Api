@@ -30,7 +30,7 @@ paths:
                 $ref: "#/components/schemas/Success"
       x-amazon-apigateway-request-validator: "Validate body"
       x-amazon-apigateway-integration:
-        uri: "arn:aws:apigateway:${stageVariables.RegionName}:lambda:path/2015-03-31/functions/arn:aws:lambda:${stageVariables.RegionName}:${stageVariables.AccountID}:function:${stageVariables.ContactMeFormFunctionName}/invocations"
+        uri: "arn:aws:apigateway:${stageVariables.RegionName}:lambda:path/2015-03-31/functions/${stageVariables.ContactMeFormFunctionArn}/invocations"
         responses:
           Malformed input:
             statusCode: "400"
