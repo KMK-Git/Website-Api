@@ -26,13 +26,13 @@ Resources:
     Type: 'AWS::Serverless::Api'
     Properties:
       Name: 'RestApi'
-      DefinitionUri: 'rest_api.yaml'
+      DefinitionBody:
+        Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location: 'rest_api.yaml'
       StageName: 'beta'
       EndpointConfiguration: 'EDGE'
-      Variables:
-        ContactMeFormFunctionArn: !GetAtt ContactMeFormFunction.Arn
-        AccountID: !Ref AWS::AccountId
-        RegionName: !Ref AWS::Region
   ContactMeFormFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
