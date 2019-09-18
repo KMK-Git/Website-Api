@@ -29,6 +29,10 @@ Resources:
       DefinitionUri: 'rest_api.yaml'
       StageName: 'beta'
       EndpointConfiguration: 'EDGE'
+      Variables:
+        ContactMeFormFunctionName: !Ref ContactMeFormFunction
+        AccountID: !Ref AWS::AccountId
+        RegionName: !Ref AWS::Region
   ContactMeFormFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
