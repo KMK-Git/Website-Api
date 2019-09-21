@@ -19,7 +19,8 @@ deploy:
   on:
     branch: master
 notifications:
-  email: false
+  email:
+    on_failure: always
 env:
   global:
   - EMAIL_TEMPLATE_BUCKET=kaustubhk-email-templates
