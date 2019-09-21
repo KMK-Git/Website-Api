@@ -125,7 +125,7 @@ def lambda_handler(event, context):
         s3_resource = boto3.resource('s3')
         sender = os.environ['SENDER']  # 'The Sender <the_sender@email.com>'
         recipients = [os.environ['ADMIN_EMAIL']]
-        title = "Contact form filled"
+        title = "Contact form filled by {} {}".format(event['firstName'], event['lastName'])
         # Text and HTML email templates are stored in S3 buckets.
         text = get_s3_object_text(s3_resource, os.environ['BUCKET_NAME'], os.environ['TEXT_TEMPLATE'])
         formatted_text = format_mail(text, event, False)
