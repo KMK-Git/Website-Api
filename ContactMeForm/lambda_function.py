@@ -112,7 +112,7 @@ def format_mail(template: str, event: dict, ishtml: bool):
     # uuid.uuid4().hex
     unsubscribe_key = "f4bd5dd85908487b904ea189fb81e753"  # Not actually applicable for Admin email ID
     for key in event:
-        subtext += "{}:{}{}".format(key, event[key], linebreak)
+        subtext += "{}: {}{}".format(key, event[key], linebreak)
     template = template.replace('{{header}}', header)
     template = template.replace('{{subtext}}', subtext)
     template = template.replace('{{unsubscribe-key}}', unsubscribe_key)
