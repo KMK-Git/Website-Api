@@ -2,6 +2,9 @@ openapi: "3.0.1"
 info:
   title: "RestApi"
   version: "0.1"
+Globals:
+  Api:
+    OpenApiVersion: '3.0.1'
 paths:
   /contact-form:
     post:
@@ -49,9 +52,9 @@ paths:
         httpMethod: "POST"
         requestTemplates:
           application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"firstName\"\
-            \ : $inputRoot.firstName,\n  \"lastName\" : $inputRoot.lastName,\n  \"\
-            email\" : $inputRoot.email,\n  \"subject\" : $inputRoot.subject,\n  \"\
-            message\" : $inputRoot.message\n}"
+            \ : \"$inputRoot.firstName\",\n  \"lastName\" : \"$inputRoot.lastName\"\
+            ,\n  \"email\" : \"$inputRoot.email\",\n  \"subject\" : \"$inputRoot.subject\"\
+            ,\n  \"message\" : \"$inputRoot.message\"\n}"
         contentHandling: "CONVERT_TO_TEXT"
         type: "aws"
     options:
