@@ -40,14 +40,14 @@ paths:
             statusCode: "400"
             responseTemplates:
               application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"message\"\
-                \ : $inputRoot.errorMessage\n}"
+                \ : \"$inputRoot.errorMessage\"\n}"
           default:
             statusCode: "200"
             responseParameters:
               method.response.header.Access-Control-Allow-Origin: "'kaustubhk.com'"
             responseTemplates:
               application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"message\"\
-                \ : $inputRoot.message\n}"
+                \ : \"$inputRoot.message\"\n}"
         passthroughBehavior: "when_no_templates"
         httpMethod: "POST"
         requestTemplates:
