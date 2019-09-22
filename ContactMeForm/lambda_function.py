@@ -40,7 +40,9 @@ def captcha_validation(token: str):
         "secret": get_secret("CAPTCHA_SECRET"),
         "response": token
     }
-    response = json.loads(requests.post(url, data=payload).text)
+    response_text = requests.post(url, data=payload).text
+    logger.info(response_text)
+    response = json.loads(response_text)
     return response['success']
 
 
