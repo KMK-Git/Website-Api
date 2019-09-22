@@ -38,6 +38,8 @@ paths:
         responses:
           Malformed input:
             statusCode: "400"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'https://kaustubhk.com'"
             responseTemplates:
               application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"message\"\
                 \ : \"$inputRoot.errorMessage\"\n}"
