@@ -44,7 +44,7 @@ paths:
           default:
             statusCode: "200"
             responseParameters:
-              method.response.header.Access-Control-Allow-Origin: "'kaustubhk.com'"
+              method.response.header.Access-Control-Allow-Origin: "'https://kaustubhk.com'"
             responseTemplates:
               application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"message\"\
                 \ : \"$inputRoot.message\"\n}"
@@ -86,7 +86,7 @@ paths:
               method.response.header.Access-Control-Max-Age: "'3600'"
               method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
               method.response.header.Access-Control-Allow-Headers: "'Content-Type'"
-              method.response.header.Access-Control-Allow-Origin: "'kaustubhk.com'"
+              method.response.header.Access-Control-Allow-Origin: "'https://kaustubhk.com'"
         passthroughBehavior: "when_no_match"
         requestTemplates:
           application/json: "{\"statusCode\": 200}"
@@ -142,13 +142,13 @@ x-amazon-apigateway-gateway-responses:
     responseParameters:
       gatewayresponse.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
       gatewayresponse.header.Access-Control-Max-Age: "'3600'"
-      gatewayresponse.header.Access-Control-Allow-Origin: "'kaustubhk.com'"
+      gatewayresponse.header.Access-Control-Allow-Origin: "'https://kaustubhk.com'"
       gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type'"
   DEFAULT_5XX:
     responseParameters:
       gatewayresponse.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
       gatewayresponse.header.Access-Control-Max-Age: "'3600'"
-      gatewayresponse.header.Access-Control-Allow-Origin: "'kaustubhk.com'"
+      gatewayresponse.header.Access-Control-Allow-Origin: "'https://kaustubhk.com'"
       gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type'"
 x-amazon-apigateway-request-validators:
   Validate body:
