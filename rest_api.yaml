@@ -17,6 +17,10 @@ paths:
       responses:
         400:
           description: "400 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
           content:
             application/json:
               schema:
