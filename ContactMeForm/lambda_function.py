@@ -35,8 +35,9 @@ def captcha_validation(token: str):
     :return: True if valid, False otherwise.
     """
     url = "https://www.google.com/recaptcha/api/siteverify"
+    secret = json.loads(get_secret("CAPTCHA_SECRET"))['CAPTCHA_SECRET']
     payload = {
-        "secret": get_secret("CAPTCHA_SECRET"),
+        "secret": secret,
         "response": token
     }
     response_raw = requests.post(url, data=payload)
