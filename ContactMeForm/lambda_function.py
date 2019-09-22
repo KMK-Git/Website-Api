@@ -41,11 +41,8 @@ def captcha_validation(token: str):
         "response": token
     }
     response_raw = requests.post(url, data=payload)
-    logging.info(response_raw)
-    print(response_raw)
     response_text = response_raw.text
-    logging.info(response_text)
-    print(response_text)
+    logging.debug(response_text)
     response = json.loads(response_text)
     return response['success']
 
@@ -168,11 +165,11 @@ def lambda_handler(event, context):
         formatted_text = format_mail(text, event, False)
         html = get_s3_object_text(s3_resource, os.environ['BUCKET_NAME'], os.environ['HTML_TEMPLATE'])
         formatted_html = format_mail(html, event, True)
-        # try:
-        #     response = send_mail(sender, recipients, title, formatted_text, formatted_html)
-        #     logger.debug(response)
-        # except Exception as e:
-        #     logger.exception("There was an exception while sending the mail")
+        try:
+            response = send_mail(sender, recipients, title, formatted_text, formatted_html)
+            logging.debug(response)
+        except Exception as e:
+            logging.exception("There was an exception while sending the mail")
         return {
             'message': 'Successful'
         }
