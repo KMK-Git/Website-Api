@@ -4,14 +4,44 @@ from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 import boto3
 import os
+import requests
+import json
 
 logger = logging.getLogger('logger')
-logging.basicConfig(format='{asctime}.{msecs:03.0f} {filename}:{lineno} {levelname} {message}',
-                    level=logging.DEBUG, style='{', datefmt='%Y-%m-%d %H:%M:%S')
+logging.basicConfig(level=logging.DEBUG)
 
 
-def captcha_validation():
-    return True
+def get_secret(secret_name):
+    """
+    Gets secret from Secret Manager. The secret should be a string.
+
+    :param secret_name: Name of string.
+    :return: Secret string value.
+    """
+    # Create a Secrets Manager client
+    session = boto3.session.Session()
+    client = session.client(service_name='secretsmanager')
+    get_secret_value_response = client.get_secret_value(
+        SecretId=secret_name
+    )
+    # Decrypts secret using the associated KMS CMK.
+    return get_secret_value_response['SecretString']
+
+
+def captcha_validation(token: str):
+    """
+    Checks for validity of user recaptcha token,
+
+    :param token: token string to be validate.
+    :return: True if valid, False otherwise.
+    """
+    url = "https://www.google.com/recaptcha/api/siteverify"
+    payload = {
+        "secret": get_secret("CAPTCHA_SECRET"),
+        "response": token
+    }
+    response = json.loads(requests.post(url, data=payload))
+    return response['success']
 
 
 def create_multipart_message(
@@ -111,7 +141,8 @@ def format_mail(template: str, event: dict, ishtml: bool):
     subtext = ""
     # uuid.uuid4().hex
     unsubscribe_key = "f4bd5dd85908487b904ea189fb81e753"  # Not actually applicable for Admin email ID
-    for key in event:
+    keys = ['firstName', 'lastName', 'email', 'subject', 'message']
+    for key in keys:
         subtext += "{}: {}{}".format(key, event[key], linebreak)
     template = template.replace('{{header}}', header)
     template = template.replace('{{subtext}}', subtext)
@@ -121,7 +152,7 @@ def format_mail(template: str, event: dict, ishtml: bool):
 
 def lambda_handler(event, context):
     logger.debug(event)
-    if captcha_validation():
+    if captcha_validation(event['recaptcha']):
         s3_resource = boto3.resource('s3')
         sender = os.environ['SENDER']  # 'The Sender <the_sender@email.com>'
         recipients = [os.environ['ADMIN_EMAIL']]

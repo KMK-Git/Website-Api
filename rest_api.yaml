@@ -54,7 +54,7 @@ paths:
           application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"firstName\"\
             \ : \"$inputRoot.firstName\",\n  \"lastName\" : \"$inputRoot.lastName\"\
             ,\n  \"email\" : \"$inputRoot.email\",\n  \"subject\" : \"$inputRoot.subject\"\
-            ,\n  \"message\" : \"$inputRoot.message\"\n}"
+            ,\n  \"message\" : \"$inputRoot.message\",\n  \"recaptcha\" : \"$inputRoot.recaptcha\"\n}"
         contentHandling: "CONVERT_TO_TEXT"
         type: "aws"
     options:
@@ -104,6 +104,7 @@ components:
       - "lastName"
       - "message"
       - "subject"
+      - "recaptcha"
       type: "object"
       properties:
         firstName:
@@ -120,6 +121,8 @@ components:
           type: "string"
         message:
           maxLength: 500
+          type: "string"
+        recaptcha:
           type: "string"
       description: "Model for contact me form"
     Error:
