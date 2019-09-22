@@ -7,7 +7,6 @@ import os
 import requests
 import json
 
-logger = logging.getLogger('logger')
 logging.basicConfig(level=logging.DEBUG)
 
 
@@ -40,8 +39,12 @@ def captcha_validation(token: str):
         "secret": get_secret("CAPTCHA_SECRET"),
         "response": token
     }
-    response_text = requests.post(url, data=payload).text
-    logger.info(response_text)
+    response_raw = requests.post(url, data=payload)
+    logging.info(response_raw)
+    print(response_raw)
+    response_text = response_raw.text
+    logging.info(response_text)
+    print(response_text)
     response = json.loads(response_text)
     return response['success']
 
@@ -153,7 +156,7 @@ def format_mail(template: str, event: dict, ishtml: bool):
 
 
 def lambda_handler(event, context):
-    logger.debug(event)
+    logging.info(event)
     if captcha_validation(event['recaptcha']):
         s3_resource = boto3.resource('s3')
         sender = os.environ['SENDER']  # 'The Sender <the_sender@email.com>'
