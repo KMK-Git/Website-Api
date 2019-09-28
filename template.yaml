@@ -26,10 +26,10 @@ Resources:
     Type: 'AWS::Serverless::Api'
     Properties:
       Name: 'RestApi'
-      MethodSettings: [{
-        "ThrottlingBurstLimit": 8,
-        "ThrottlingRateLimit": 4.0
-      }]
+      MethodSettings:
+      - HttpMethod: '*'
+        ThrottlingBurstLimit: 8
+        ThrottlingRateLimit: 4.0
       DefinitionBody:
         Fn::Transform:
           Name: AWS::Include
