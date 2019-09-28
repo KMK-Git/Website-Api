@@ -58,9 +58,13 @@ paths:
         httpMethod: "POST"
         requestTemplates:
           application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"firstName\"\
-            \ : \"$inputRoot.firstName\",\n  \"lastName\" : \"$inputRoot.lastName\"\
-            ,\n  \"email\" : \"$inputRoot.email\",\n  \"subject\" : \"$inputRoot.subject\"\
-            ,\n  \"message\" : \"$inputRoot.message\",\n  \"recaptcha\" : \"$inputRoot.recaptcha\"\n}"
+            \ : \"$util.escapeJavaScript($inputRoot.firstName).replaceAll(\"\\\\'\"\
+            ,\"'\")\",\n  \"lastName\" : \"$util.escapeJavaScript($inputRoot.lastName).replaceAll(\"\
+            \\\\'\",\"'\")\",\n  \"email\" : \"$util.escapeJavaScript($inputRoot.email).replaceAll(\"\
+            \\\\'\",\"'\")\",\n  \"subject\" : \"$util.escapeJavaScript($inputRoot.subject).replaceAll(\"\
+            \\\\'\",\"'\")\",\n  \"message\" : \"$util.escapeJavaScript($inputRoot.message).replaceAll(\"\
+            \\\\'\",\"'\")\",\n  \"recaptcha\" : \"$util.escapeJavaScript($inputRoot.recaptcha).replaceAll(\"\
+            \\\\'\",\"'\")\"\n}"
         contentHandling: "CONVERT_TO_TEXT"
         type: "aws"
     options:
