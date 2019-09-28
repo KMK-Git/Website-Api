@@ -7,7 +7,8 @@ import os
 import requests
 import json
 
-logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger('logger')
+logger.setLevel(logging.DEBUG)
 
 
 def get_secret(secret_name):
@@ -42,7 +43,7 @@ def captcha_validation(token: str):
     }
     response_raw = requests.post(url, data=payload)
     response_text = response_raw.text
-    logging.debug(response_text)
+    logger.debug(response_text)
     response = json.loads(response_text)
     return response['success']
 
@@ -154,7 +155,7 @@ def format_mail(template: str, event: dict, ishtml: bool):
 
 
 def lambda_handler(event, context):
-    logging.info(event)
+    logger.info(str(event).replace("'", '"'))
     if captcha_validation(event['recaptcha']):
         s3_resource = boto3.resource('s3')
         sender = os.environ['SENDER']  # 'The Sender <the_sender@email.com>'
@@ -167,7 +168,7 @@ def lambda_handler(event, context):
         formatted_html = format_mail(html, event, True)
         try:
             response = send_mail(sender, recipients, title, formatted_text, formatted_html)
-            logging.debug(response)
+            logger.debug(response)
         except Exception as e:
             logging.exception("There was an exception while sending the mail")
         return {
