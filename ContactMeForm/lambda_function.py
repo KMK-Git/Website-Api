@@ -6,6 +6,7 @@ import boto3
 import os
 import requests
 import json
+import html
 
 logger = logging.getLogger('logger')
 logger.setLevel(logging.DEBUG)
@@ -137,17 +138,17 @@ def format_mail(template: str, event: dict, ishtml: bool):
     :param ishtml: True if template is HTML. Linebreaks are changed accordingly.
     :return: Formatted email template.
     """
-    if ishtml:
-        linebreak = '<br>'
-    else:
-        linebreak = '\n'
     header = "Someone filled the contact form"
     subtext = ""
     # uuid.uuid4().hex
     unsubscribe_key = "f4bd5dd85908487b904ea189fb81e753"  # Not actually applicable for Admin email ID
     keys = ['firstName', 'lastName', 'email', 'subject', 'message']
     for key in keys:
-        subtext += "{}: {}{}".format(key, event[key], linebreak)
+        if ishtml:
+            value = html.escape(event[key]).replace('\n', '<br/>')
+            subtext += "{}: {}<br>".format(key, value)
+        else:
+            subtext += "{}: {}\n".format(key, event[key])
     template = template.replace('{{header}}', header)
     template = template.replace('{{subtext}}', subtext)
     template = template.replace('{{unsubscribe-key}}', unsubscribe_key)
