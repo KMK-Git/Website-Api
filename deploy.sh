@@ -22,6 +22,6 @@ for file in ${files[*]}
 do
   if ! grep -q "$file" "${PACKAGED_TEMPLATE_FILE}"
   then
-    aws s3 rm "s3://${BUILD_ARTIFACT_BUCKET}/${file}" --dryrun
+    aws s3 rm "s3://${BUILD_ARTIFACT_BUCKET}/${file}"
   fi
 done
