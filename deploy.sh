@@ -1,17 +1,27 @@
 #!/usr/bin/env bash
-aws s3 sync ./email_templates "s3://$EMAIL_TEMPLATE_BUCKET"
-oldfiles=$(aws s3 ls s3://$BUILD_ARTIFACT_BUCKET --recursive | awk '{$1=$2=$3=""; printf "%s ", $0 }' | sed 's/[ \t]\+/ /g')
-sam package --template-file build/template.yaml --s3-bucket $BUILD_ARTIFACT_BUCKET --output-template-file build/packaged.yaml
+
 STACK_NAME="website-api"
-TEMPLATE="build/packaged.yaml"
+TEMPLATE_FILE="build/template.yaml"
+PACKAGED_TEMPLATE_FILE="build/packaged.yaml"
 PARAMETERS_FILE="params.json"
+EMAIL_TEMPLATES_DIR="./email_templates"
 PARAMS=($(jq -r '.[] | [.ParameterKey, .ParameterValue] | "\(.[0])=\(.[1])"' ${PARAMETERS_FILE}))
+
+aws s3 sync "${EMAIL_TEMPLATES_DIR}" "s3://${EMAIL_TEMPLATE_BUCKET}"
+
+sam package --template-file "${TEMPLATE_FILE}" --s3-bucket "${BUILD_ARTIFACT_BUCKET}" --output-template-file "${PACKAGED_TEMPLATE_FILE}"
+
 sam deploy \
-  --template-file "${TEMPLATE}" \
+  --template-file "${PACKAGED_TEMPLATE_FILE}" \
   --stack-name "${STACK_NAME}" \
   --parameter-overrides ${PARAMS[@]} \
   --no-fail-on-empty-changeset
-for file in ${oldfiles[*]}
+
+files=$(aws s3 ls "s3://${BUILD_ARTIFACT_BUCKET}" --recursive | awk '{$1=$2=$3=""; printf "%s ", $0 }' | sed 's/[ \t]\+/ /g')
+for file in ${files[*]}
 do
-	aws s3 rm "s3://$BUILD_ARTIFACT_BUCKET/$file" --dryrun
+  if ! grep -q "$file" "${PACKAGED_TEMPLATE_FILE}"
+  then
+    aws s3 rm "s3://${BUILD_ARTIFACT_BUCKET}/${file}" --dryrun
+  fi
 done
