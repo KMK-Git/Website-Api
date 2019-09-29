@@ -126,6 +126,7 @@ def get_birthday_list() -> list:
     current_datetime = datetime.datetime.utcnow()
     current_date = current_datetime.strftime('%Y-%m-%d')
     current_time = current_datetime.strftime('%H:%M')
+    logger.debug(current_datetime)
 
     results = dynamodb_client.query(
         ExpressionAttributeValues={
