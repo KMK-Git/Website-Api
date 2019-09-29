@@ -88,7 +88,7 @@ Resources:
         CronScheduler:
           Type: Schedule
           Properties:
-            Schedule: 'rate(15 minutes)'
+            Schedule: 'cron(0/15 * * * ? *)'
             Name: '15-minutes-cron'
             Description: '15 minutes cron for birthday mailer'
             Enabled: False
