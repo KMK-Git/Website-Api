@@ -29,7 +29,7 @@ Resources:
       MethodSettings:
       - HttpMethod: '*'
         ResourcePath: '/*'
-        ThrottlingBurstLimit: 8
+        ThrottlingBurstLimit: 4
         ThrottlingRateLimit: 4.0
       DefinitionBody:
         Fn::Transform:
