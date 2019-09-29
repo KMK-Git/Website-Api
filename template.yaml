@@ -62,11 +62,26 @@ Resources:
             Path: /contact-form
             Method: post
             RestApiId: !Ref RestApi
+  BirthdaysTable:
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      AttributeDefinitions:
+        - AttributeName: 'Date'
+          AttributeType: 'S'
+        - AttributeName: 'Time'
+          AttributeType: 'S'
+      BillingMode: 'PAY_PER_REQUEST'
+      KeySchema: 
+        - AttributeName: 'Date'
+          KeyType: 'HASH'
+        - AttributeName: 'Time'
+          KeyType: 'RANGE'
+      TableName: 'Birthdays'
 
 Outputs:
   RestApiEndpoint:
-    Description: "API Gateway endpoint URL for for Rest API"
-    Value: !Sub "https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/${RestApi.Stage}/"
+    Description: 'API Gateway endpoint URL for for Rest API'
+    Value: !Sub 'https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/${RestApi.Stage}/'
   ContactMeFormARN:
-    Description: "ContactMeForm Function ARN"
+    Description: 'ContactMeForm Function ARN'
     Value: !GetAtt ContactMeFormFunction.Arn
