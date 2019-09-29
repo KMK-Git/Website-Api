@@ -50,7 +50,7 @@ def captcha_validation(token: str):
 
 
 def create_multipart_message(
-        sender: str, recipients: list, title: str, text: str = None, html: str = None, attachments: list = None) \
+        sender: str, recipients: list, title: str, text: str = None, html_text: str = None, attachments: list = None) \
         -> MIMEMultipart:
     """
     Creates a MIME multipart message object.
@@ -62,11 +62,11 @@ def create_multipart_message(
     :param recipients: List of recipients. Needs to be a list, even if only one recipient.
     :param title: The title of the email.
     :param text: The text version of the email body (optional).
-    :param html: The html version of the email body (optional).
+    :param html_text: The html version of the email body (optional).
     :param attachments: List of files to attach in the email.
     :return: A `MIMEMultipart` to be used to send the email.
     """
-    multipart_content_subtype = 'alternative' if text and html else 'mixed'
+    multipart_content_subtype = 'alternative' if text and html_text else 'mixed'
     msg = MIMEMultipart(multipart_content_subtype)
     msg['Subject'] = title
     msg['From'] = sender
@@ -77,8 +77,8 @@ def create_multipart_message(
     if text:
         part = MIMEText(text, 'plain')
         msg.attach(part)
-    if html:
-        part = MIMEText(html, 'html')
+    if html_text:
+        part = MIMEText(html_text, 'html')
         msg.attach(part)
 
     # Add attachments
@@ -92,7 +92,7 @@ def create_multipart_message(
 
 
 def send_mail(
-        sender: str, recipients: list, title: str, text: str = None, html: str = None,
+        sender: str, recipients: list, title: str, text: str = None, html_text: str = None,
         attachments: list = None) -> dict:
     """
     Send email to recipients. Sends one mail to all recipients.
@@ -103,11 +103,11 @@ def send_mail(
     :param recipients: List of recipients. Needs to be a list, even if only one recipient.
     :param title: The title of the email.
     :param text: The text version of the email body (optional).
-    :param html: The html version of the email body (optional).
+    :param html_text: The html version of the email body (optional).
     :param attachments: List of files to attach in the email.
     :return: Response of ses_client.
     """
-    msg = create_multipart_message(sender, recipients, title, text, html, attachments)
+    msg = create_multipart_message(sender, recipients, title, text, html_text, attachments)
     ses_client = boto3.client('ses')  # Use your settings here
     return ses_client.send_raw_email(
         Source=sender,
@@ -148,7 +148,7 @@ def format_mail(template: str, event: dict, ishtml: bool):
             value = html.escape(event[key]).replace('\n', '<br/>')
             subtext += "{}: {}<br>".format(key, value)
         else:
-            subtext += "{}: {}\n".format(key, event[key])
+            subtext += "{}: {}\n".format(key, event[key]).replace('\n', '\r\n')
     template = template.replace('{{header}}', header)
     template = template.replace('{{subtext}}', subtext)
     template = template.replace('{{unsubscribe-key}}', unsubscribe_key)
@@ -165,12 +165,12 @@ def lambda_handler(event, context):
         # Text and HTML email templates are stored in S3 buckets.
         text = get_s3_object_text(s3_resource, os.environ['BUCKET_NAME'], os.environ['TEXT_TEMPLATE'])
         formatted_text = format_mail(text, event, False)
-        html = get_s3_object_text(s3_resource, os.environ['BUCKET_NAME'], os.environ['HTML_TEMPLATE'])
-        formatted_html = format_mail(html, event, True)
+        html_text = get_s3_object_text(s3_resource, os.environ['BUCKET_NAME'], os.environ['HTML_TEMPLATE'])
+        formatted_html = format_mail(html_text, event, True)
         try:
             response = send_mail(sender, recipients, title, formatted_text, formatted_html)
             logger.debug(response)
-        except Exception as e:
+        except Exception:
             logging.exception("There was an exception while sending the mail")
         return {
             'message': 'Successful'

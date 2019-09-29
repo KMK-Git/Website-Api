@@ -109,12 +109,12 @@ components:
     ContactMeForm:
       title: "Contact Me Form"
       required:
-      - "email"
-      - "firstName"
-      - "lastName"
-      - "message"
-      - "subject"
-      - "recaptcha"
+        - "email"
+        - "firstName"
+        - "lastName"
+        - "message"
+        - "subject"
+        - "recaptcha"
       type: "object"
       properties:
         firstName:
