@@ -9,6 +9,9 @@ Parameters:
   ContactMeFormFunctionRoleARN:
     Type: 'String'
     AllowedPattern: 'arn:(aws[a-zA-Z-]*)?:iam::\d{12}:role/?[a-zA-Z_0-9+=,.@\-_/]+'
+  BirthdayMailerFunctionRoleARN:
+    Type: 'String'
+    AllowedPattern: 'arn:(aws[a-zA-Z-]*)?:iam::\d{12}:role/?[a-zA-Z_0-9+=,.@\-_/]+'
   EmailTemplateBucket:
     Type: 'String'
     MinLength: 3
@@ -16,6 +19,8 @@ Parameters:
   TextGenericTemplate:
     Type: 'String'
   HtmlGenericTemplate:
+    Type: 'String'
+  HtmlBirthdayTemplate:
     Type: 'String'
   SenderEmail:
     Type: 'String'
@@ -27,10 +32,10 @@ Resources:
     Properties:
       Name: 'RestApi'
       MethodSettings:
-      - HttpMethod: '*'
-        ResourcePath: '/*'
-        ThrottlingBurstLimit: 4
-        ThrottlingRateLimit: 4.0
+        - HttpMethod: '*'
+          ResourcePath: '/*'
+          ThrottlingBurstLimit: 4
+          ThrottlingRateLimit: 4.0
       DefinitionBody:
         Fn::Transform:
           Name: AWS::Include
@@ -62,16 +67,41 @@ Resources:
             Path: /contact-form
             Method: post
             RestApiId: !Ref RestApi
+  BirthdayMailerFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: 'BirthdayMailer'
+      CodeUri: 'BirthdayMailer/'
+      Handler: 'lambda_function.lambda_handler'
+      Runtime: 'python3.7'
+      Timeout: 15
+      ReservedConcurrentExecutions: 2
+      Role: !Ref BirthdayMailerFunctionRoleARN
+      Environment:
+        Variables:
+          BUCKET_NAME: !Ref EmailTemplateBucket
+          TEXT_TEMPLATE: !Ref TextGenericTemplate
+          HTML_TEMPLATE: !Ref HtmlBirthdayTemplate
+          SENDER: !Ref SenderEmail
+          ADMIN_EMAIL: !Ref AdminEmail
+      Events:
+        CronScheduler:
+          Type: Schedule
+          Properties:
+            Schedule: 'rate(15 minutes)'
+            Name: '15-minutes-cron'
+            Description: '15 minutes cron for birthday mailer'
+            Enabled: False
   BirthdaysTable:
     Type: AWS::DynamoDB::Table
-    Properties: 
+    Properties:
       AttributeDefinitions:
         - AttributeName: 'Date'
           AttributeType: 'S'
         - AttributeName: 'Time'
           AttributeType: 'S'
       BillingMode: 'PAY_PER_REQUEST'
-      KeySchema: 
+      KeySchema:
         - AttributeName: 'Date'
           KeyType: 'HASH'
         - AttributeName: 'Time'

@@ -2,7 +2,11 @@
   {
     "ParameterKey": "ContactMeFormFunctionRoleARN",
     "ParameterValue": "arn:aws:iam::765481644205:role/LambdaWebsiteAPI"
-  }, 
+  },
+  {
+    "ParameterKey": "BirthdayMailerFunctionRoleARN",
+    "ParameterValue": "arn:aws:iam::765481644205:role/LambdaWebsiteAPI"
+  },
   {
     "ParameterKey": "EmailTemplateBucket",
     "ParameterValue": "kaustubhk-email-templates"
@@ -14,7 +18,11 @@
   {
     "ParameterKey": "HtmlGenericTemplate",
     "ParameterValue": "generic_template.html"
-  }, 
+  },
+  {
+    "ParameterKey": "HtmlBirthdayTemplate",
+    "ParameterValue": "birthday_template.html"
+  },
   {
     "ParameterKey": "SenderEmail",
     "ParameterValue": "admin@kaustubhk.com"
