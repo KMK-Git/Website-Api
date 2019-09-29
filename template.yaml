@@ -28,6 +28,7 @@ Resources:
       Name: 'RestApi'
       MethodSettings:
       - HttpMethod: '*'
+        ResourcePath: '/*'
         ThrottlingBurstLimit: 8
         ThrottlingRateLimit: 4.0
       DefinitionBody:
