@@ -133,12 +133,14 @@ def get_birthday_list() -> list:
                 'S': current_date,
             }
         },
-        KeyConditionExpression='Date = :dateValue',
-        TableName='Birthdays',
+        KeyConditionExpression='DateKey = :dateValue',
+        TableName='BirthdaysTable',
     )
+    logger.debug(results)
+
     birthday_list = []
     for birthday in results['Items']:
-        birthday_time = birthday['Time']['S'].split('-')[0]
+        birthday_time = birthday['TimeName']['S'].split('-')[0]
         if birthday_time == current_time:
             birthday_list.append(birthday)
     return birthday_list
