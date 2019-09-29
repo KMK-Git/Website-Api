@@ -106,7 +106,7 @@ Resources:
           KeyType: 'HASH'
         - AttributeName: 'TimeName'
           KeyType: 'RANGE'
-      TableName: 'Birthdays'
+      TableName: 'BirthdaysTable'
 
 Outputs:
   RestApiEndpoint:
