@@ -9,7 +9,7 @@ import json
 import html
 
 logger = logging.getLogger('logger')
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 
 def get_secret(secret_name):
