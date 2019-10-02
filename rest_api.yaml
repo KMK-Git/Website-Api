@@ -239,34 +239,34 @@ components:
         - "day"
         - "month"
         - "timezone"
-        type: "object"
-        properties:
-          firstName:
-            maxLength: 50
-            type: "string"
-          lastName:
-            maxLength: 50
-            type: "string"
-          email:
-            type: "string"
-            format: "email"
-          subtext:
-            maxLength: 100
-            type: "string"
-          day:
-            minimum: 1
-            maximum: 31
-            type: "integer"
-          month:
-            minimum: 1
-            maximum: 12
-            type: "integer"
-          timezone:
-            minimum: -12
-            maximum: 13
-            multipleOf: 0.25
-            type: "number"
-        description: "Model for form to add birthdays"
+      type: "object"
+      properties:
+        firstName:
+          maxLength: 50
+          type: "string"
+        lastName:
+          maxLength: 50
+          type: "string"
+        email:
+          type: "string"
+          format: "email"
+        subtext:
+          maxLength: 100
+          type: "string"
+        day:
+          minimum: 1
+          maximum: 31
+          type: "integer"
+        month:
+          minimum: 1
+          maximum: 12
+          type: "integer"
+        timezone:
+          minimum: -12
+          maximum: 13
+          multipleOf: 0.25
+          type: "number"
+      description: "Model for form to add birthdays"
     Error:
       title: "Error Schema"
       type: "object"
