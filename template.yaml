@@ -12,6 +12,9 @@ Parameters:
   BirthdayMailerFunctionRoleARN:
     Type: 'String'
     AllowedPattern: 'arn:(aws[a-zA-Z-]*)?:iam::\d{12}:role/?[a-zA-Z_0-9+=,.@\-_/]+'
+  BirthdayPostFunctionRoleARN:
+    Type: 'String'
+    AllowedPattern: 'arn:(aws[a-zA-Z-]*)?:iam::\d{12}:role/?[a-zA-Z_0-9+=,.@\-_/]+'
   EmailTemplateBucket:
     Type: 'String'
     MinLength: 3
@@ -23,6 +26,8 @@ Parameters:
   HtmlBirthdayTemplate:
     Type: 'String'
   SenderEmail:
+    Type: 'String'
+  BirthdaySenderEmail:
     Type: 'String'
   AdminEmail:
     Type: 'String'
@@ -67,6 +72,23 @@ Resources:
             Path: '/contact-form'
             Method: 'post'
             RestApiId: !Ref RestApi
+  BirthdayPostFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: 'BirthdayPost'
+      CodeUri: 'BirthdayPost/'
+      Handler: 'lambda_function.lambda_handler'
+      Runtime: 'python3.7'
+      Timeout: 15
+      ReservedConcurrentExecutions: 2
+      Role: !Ref BirthdayPostFunctionRoleARN
+      Events:
+        RestApiEvent:
+          Type: 'Api'
+          Properties:
+            Path: '/birthday'
+            Method: 'post'
+            RestApiId: !Ref RestApi
   BirthdayMailerFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
@@ -82,7 +104,7 @@ Resources:
           BUCKET_NAME: !Ref EmailTemplateBucket
           TEXT_TEMPLATE: !Ref TextGenericTemplate
           HTML_TEMPLATE: !Ref HtmlBirthdayTemplate
-          SENDER: !Ref SenderEmail
+          SENDER: !Ref BirthdaySenderEmail
           ADMIN_EMAIL: !Ref AdminEmail
       Events:
         CronScheduler:

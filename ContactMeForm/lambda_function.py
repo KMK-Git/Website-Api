@@ -12,7 +12,7 @@ logger = logging.getLogger('logger')
 logger.setLevel(logging.INFO)
 
 
-def get_secret(secret_name):
+def get_secret(secret_name) -> str:
     """
     Gets secret from Secret Manager. The secret should be a string.
 
@@ -129,7 +129,7 @@ def get_s3_object_text(s3_resource: boto3.session.Session.resource, bucket_name:
     return obj.get()['Body'].read().decode('utf-8')
 
 
-def format_mail(template: str, event: dict, ishtml: bool):
+def format_mail(template: str, event: dict, ishtml: bool) -> str:
     """
     Formats the email template according to lambda triggering event.
 
@@ -171,7 +171,7 @@ def lambda_handler(event, context):
             response = send_mail(sender, recipients, title, formatted_text, formatted_html)
             logger.debug(response)
         except Exception:
-            logging.exception("There was an exception while sending the mail")
+            logger.exception("There was an exception while sending the mail")
         return {
             'message': 'Successful'
         }

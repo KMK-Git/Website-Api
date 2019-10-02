@@ -124,7 +124,7 @@ def get_birthday_list() -> list:
     dynamodb_client = boto3.client('dynamodb')
 
     current_datetime = datetime.datetime.utcnow()
-    current_date = current_datetime.strftime('%Y-%m-%d')
+    current_date = current_datetime.strftime('%m-%d')
     current_time = current_datetime.strftime('%H:%M')
     logger.debug(current_datetime)
 
