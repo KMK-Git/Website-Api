@@ -50,7 +50,8 @@ def lambda_handler(event, context):
         birthday_item = convert_event(event)
         save_birthday_to_dynamodb(birthday_item)
     except Exception:
-        logger.exception("There was an exception while saving to DynamoDB")
+        logger.exception("There was an exception")
+        raise Exception("Malformed input")
     return {
         'message': 'Successful'
     }

@@ -12,6 +12,10 @@
     "ParameterValue": "arn:aws:iam::765481644205:role/LambdaWebsiteAPI"
   },
   {
+    "ParameterKey": "UnsubscribeFunctionRoleARN",
+    "ParameterValue": "arn:aws:iam::765481644205:role/LambdaWebsiteAPI"
+  },
+  {
     "ParameterKey": "EmailTemplateBucket",
     "ParameterValue": "kaustubhk-email-templates"
   }, 
