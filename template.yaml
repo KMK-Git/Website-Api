@@ -62,10 +62,10 @@ Resources:
           ADMIN_EMAIL: !Ref AdminEmail
       Events:
         RestApiEvent:
-          Type: Api
+          Type: 'Api'
           Properties:
-            Path: /contact-form
-            Method: post
+            Path: '/contact-form'
+            Method: 'post'
             RestApiId: !Ref RestApi
   BirthdayMailerFunction:
     Type: 'AWS::Serverless::Function'
@@ -86,14 +86,14 @@ Resources:
           ADMIN_EMAIL: !Ref AdminEmail
       Events:
         CronScheduler:
-          Type: Schedule
+          Type: 'Schedule'
           Properties:
             Schedule: 'cron(0/15 * * * ? *)'
-            Name: '15-minutes-cron'
+            Name: '15-minute-cron'
             Description: '15 minutes cron for birthday mailer'
             Enabled: False
   BirthdaysTable:
-    Type: AWS::DynamoDB::Table
+    Type: 'AWS::DynamoDB::Table'
     Properties:
       AttributeDefinitions:
         - AttributeName: 'DateKey'
@@ -106,6 +106,13 @@ Resources:
           KeyType: 'HASH'
         - AttributeName: 'TimeName'
           KeyType: 'RANGE'
+      GlobalSecondaryIndexes:
+        - IndexName: 'UnsubscribeKeyIndex'
+          KeySchema:
+            - AttributeName: 'UnsubscribeKey'
+              KeyType: 'HASH'
+          Projection:
+            ProjectionType: 'KEYS_ONLY'
       TableName: 'BirthdaysTable'
 
 Outputs:
