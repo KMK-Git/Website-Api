@@ -133,7 +133,7 @@ Resources:
             Schedule: 'cron(0/15 * * * ? *)'
             Name: '15-minute-cron'
             Description: '15 minutes cron for birthday mailer'
-            Enabled: False
+            Enabled: True
   BirthdaysTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
