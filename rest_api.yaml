@@ -341,7 +341,7 @@ components:
           type: "string"
           format: "email"
         subtext:
-          maxLength: 100
+          maxLength: 500
           type: "string"
         day:
           minimum: 1
