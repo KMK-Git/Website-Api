@@ -51,6 +51,12 @@ Resources:
             Location: 'rest_api.yaml'
       StageName: 'beta'
       EndpointConfiguration: 'EDGE'
+#      Auth:
+#        Authorizers:
+#          CognitoAuth:
+#            UserPoolArn: !GetAtt BirthdayUserPool.Arn
+#            Identity:
+#              Header: 'Authorization'
   BirthdayUserPool:
     Type: 'AWS::Cognito::UserPool'
     Properties:
@@ -90,6 +96,8 @@ Resources:
             Path: '/contact-form'
             Method: 'post'
             RestApiId: !Ref RestApi
+            Auth:
+              Authorizer: 'CognitoAuth'
   BirthdayPostFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
