@@ -51,12 +51,22 @@ Resources:
             Location: 'rest_api.yaml'
       StageName: 'beta'
       EndpointConfiguration: 'EDGE'
-  ContactMeFormFunction:
-    Type: 'AWS::Serverless::Function'
+  BirthdayUserPool:
+    Type: 'AWS::Cognito::UserPool'
     Properties:
-      FunctionName: 'ContactMeForm'
-      CodeUri: 'ContactMeForm/'
-      Handler: 'lambda_function.lambda_handler'
+      UserPoolName: 'BirthdayUserPool'
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: True
+      MfaConfiguration: 'OFF'
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: True
+          RequireNumbers: True
+          RequireSymbols: True
+          RequireUppercase: True
+          TemporaryPasswordValidityDays: 1
+  ContactMeFormFunction:Us
       Runtime: 'python3.7'
       Timeout: 15
       ReservedConcurrentExecutions: 4
