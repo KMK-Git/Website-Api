@@ -51,12 +51,6 @@ Resources:
             Location: 'rest_api.yaml'
       StageName: 'beta'
       EndpointConfiguration: 'EDGE'
-#      Auth:
-#        Authorizers:
-#          CognitoAuth:
-#            UserPoolArn: !GetAtt BirthdayUserPool.Arn
-#            Identity:
-#              Header: 'Authorization'
   BirthdayUserPool:
     Type: 'AWS::Cognito::UserPool'
     Properties:
@@ -72,6 +66,12 @@ Resources:
           RequireSymbols: True
           RequireUppercase: True
           TemporaryPasswordValidityDays: 1
+  BirthdayUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref BirthdayUserPool
+      ClientName: 'BirthdayUserPoolClient'
+      GenerateSecret: False
   ContactMeFormFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
