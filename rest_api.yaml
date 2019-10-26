@@ -23,6 +23,9 @@ paths:
             Access-Control-Allow-Origin:
               schema:
                 type: "string"
+            Access-Control-Allow-Credentials:
+              schema:
+                type: "string"
           content:
             application/json:
               schema:
@@ -31,6 +34,9 @@ paths:
           description: "200 response"
           headers:
             Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Credentials:
               schema:
                 type: "string"
           content:
@@ -46,6 +52,7 @@ paths:
             statusCode: "400"
             responseParameters:
               method.response.header.Access-Control-Allow-Origin: "'https://kaustubhk.com'"
+              method.response.header.Access-Control-Allow-Credentials: "'true'"
             responseTemplates:
               application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"message\"\
                   \ : \"$inputRoot.errorMessage\"\n}"
@@ -53,6 +60,7 @@ paths:
             statusCode: "200"
             responseParameters:
               method.response.header.Access-Control-Allow-Origin: "'https://kaustubhk.com'"
+              method.response.header.Access-Control-Allow-Credentials: "'true'"
             responseTemplates:
               application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"message\"\
                   \ : \"$inputRoot.message\"\n}"
@@ -85,6 +93,9 @@ paths:
             Access-Control-Allow-Headers:
               schema:
                 type: "string"
+            Access-Control-Allow-Credentials:
+              schema:
+                type: "string"
           content:
             application/json:
               schema:
@@ -96,8 +107,9 @@ paths:
             responseParameters:
               method.response.header.Access-Control-Max-Age: "'3600'"
               method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type, Authorization'"
               method.response.header.Access-Control-Allow-Origin: "'https://kaustubhk.com'"
+              method.response.header.Access-Control-Allow-Credentials: "'true'"
         passthroughBehavior: "when_no_match"
         requestTemplates:
           application/json: "{\"statusCode\": 200}"
