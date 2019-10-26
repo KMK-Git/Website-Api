@@ -72,6 +72,8 @@ Resources:
       UserPoolId: !Ref BirthdayUserPool
       ClientName: 'BirthdayUserPoolClient'
       GenerateSecret: False
+      SupportedIdentityProviders:
+        - 'COGNITO'
   ContactMeFormFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
