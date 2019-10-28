@@ -31,17 +31,12 @@ def save_birthday_to_dynamodb(fields: dict) -> None:
     """
     Saves birthday to dynamodb, with proper time and an auto generated unsubscribe key.
 
-    :param fields: Fields to be saved in dynamodb. This function assumes that all fields are strings.
+    :param fields: Fields to be saved in dynamodb.
     :return: None.
     """
-    item = {}
-    for key, value in fields.items():
-        item[key] = {'S': value}
-    dynamodb_client = boto3.client('dynamodb')
-    dynamodb_client.put_item(
-        TableName='BirthdaysTable',
-        Item=item
-    )
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.Table('BirthdaysTable')
+    table.put_item(Item=fields)
 
 
 def lambda_handler(event, context):
