@@ -16,13 +16,17 @@
     "ParameterValue": "arn:aws:iam::765481644205:role/LambdaWebsiteAPI"
   },
   {
+    "ParameterKey": "BirthdaysGetFunctionRoleARN",
+    "ParameterValue": "arn:aws:iam::765481644205:role/LambdaWebsiteAPI"
+  },
+  {
     "ParameterKey": "EmailTemplateBucket",
     "ParameterValue": "kaustubhk-email-templates"
-  }, 
+  },
   {
     "ParameterKey": "TextGenericTemplate",
     "ParameterValue": "generic_template.txt"
-  }, 
+  },
   {
     "ParameterKey": "HtmlGenericTemplate",
     "ParameterValue": "generic_template.html"
