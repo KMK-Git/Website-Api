@@ -54,6 +54,7 @@ Resources:
             Location: 'rest_api.yaml'
       StageName: 'beta'
       EndpointConfiguration: 'EDGE'
+      OpenApiVersion: '3.0.1'
   BirthdayUserPool:
     Type: 'AWS::Cognito::UserPool'
     Properties:
